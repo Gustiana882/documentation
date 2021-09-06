@@ -160,6 +160,7 @@ docker run <image> -e <variable env>='value' -e <variable env>='value'
 
 ## Membuat image docker file
 from memilih image
+buat file Dockerfile
 workdir membuat folder
 copy menyalin file
 run menjalankan perintah
@@ -185,6 +186,29 @@ dockerignore
 ```bash
 .dockerignore
 node_modules
+```
+
+constoh dockerfile frontend
+```bash
+FROM node as build-stage
+
+WORKDIR /app
+
+COPY package.json ./
+
+RUN yarn install
+
+COPY . .
+
+RUN yarn run build
+
+FROM nginx as production-stage
+
+COPY --from=build-stage /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD [ "nginx", "-g", "daemon off;" ]
 ```
 
 ## menjalankan file docker image
